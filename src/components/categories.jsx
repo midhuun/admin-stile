@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { getProducts } from "./fetchProducts";
+import Loading from "./Loading";
 
 const Modal = ({ isOpen, onClose, onSubmit, formData, handleInputChange }) => {
   const [uploading, setUploading] = useState(false);
-
-  const handleImageUpload = async (event) => {
+    const handleImageUpload = async (event) => {
     const file = event.target.files[0];
     if (!file) return;
 
@@ -13,6 +13,7 @@ const Modal = ({ isOpen, onClose, onSubmit, formData, handleInputChange }) => {
     formData.append("image", file);
 
     try {
+
       const res = await fetch("https://api.imgbb.com/1/upload?key=f3145a10e034400f4b912f8123f851b1", {
         method: "POST",
         body: formData,
@@ -34,6 +35,7 @@ const Modal = ({ isOpen, onClose, onSubmit, formData, handleInputChange }) => {
   if (!isOpen) return null;
 
   return (
+    <>
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
       <div className="bg-white rounded-lg shadow-lg p-6 w-11/12 max-w-md">
         <h3 className="text-xl font-bold mb-4">
@@ -91,6 +93,7 @@ const Modal = ({ isOpen, onClose, onSubmit, formData, handleInputChange }) => {
         </form>
       </div>
     </div>
+    </>
   );
 };
 
@@ -98,11 +101,14 @@ const CategoryPage = () => {
   const [categories, setCategories] = useState([]);
   const [formData, setFormData] = useState({ name: "", startingPrice: "", image: "" });
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isloading,setisLoading] = useState(false);
   const [isEdit,setIsEdit] = useState(false);
   useEffect(() => {
+    setisLoading(true);
     const getAllProducts = async () => {
       const data = await getProducts();
       console.log(data);
+      setisLoading(false);
       setCategories(data.categories);
     };
     getAllProducts();
@@ -114,11 +120,12 @@ const CategoryPage = () => {
   };
 
   const addCategory = async (e) => {
+    setisLoading(true);
     e.preventDefault();
       const url = formData._id
       ? `https://stile-backend-gnqp.vercel.app/admin/update/category` 
       : "https://stile-backend-gnqp.vercel.app/admin/create/category"; 
-
+    
     const method = formData._id ? "PUT" : "POST"; 
     console.log(formData)
     const res = await fetch(url, {
@@ -130,6 +137,7 @@ const CategoryPage = () => {
     });
     const data = await res.json();
     console.log(data);
+    setisLoading(false);
     window.location.reload();
     setFormData({ name: "", startingPrice: "", image: "" });
     setIsModalOpen(false);
@@ -156,8 +164,10 @@ const CategoryPage = () => {
       console.error(err);
     }
   };
-
+  console.log(isloading);
   return (
+    <>
+    {isloading && <Loading />}
     <div className="container mx-auto p-6 bg-gray-50 min-h-screen">
       <h2 className="text-sm md:text-lg  mb-6 flex justify-between items-center">
         Categories
@@ -205,6 +215,7 @@ const CategoryPage = () => {
         
       />
     </div>
+    </>
   );
 };
 

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { getProducts } from "./fetchProducts";
+import Loading from "./Loading";
 
 const Modal = ({ isOpen, onClose, onSubmit, formData, handleInputChange }) => {
   const [categories, setCategories] = useState([]);
@@ -109,11 +110,14 @@ const SubCategoryPage = () => {
   const [subcategories, setSubCategories] = useState([]);
   const [formData, setFormData] = useState({ name: "", category: "", image: "" });
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isloading,setisLoading] = useState(false);
 
   useEffect(() => {
     const fetchSubcategories = async () => {
+      setisLoading(true);
       const data = await getProducts();
       setSubCategories(data.subCategories);
+      setisLoading(false);
     };
     fetchSubcategories();
   }, []);
@@ -124,6 +128,7 @@ const SubCategoryPage = () => {
   };
 
   const addOrEditSubCategory = async (e) => {
+    setisLoading(true);
     e.preventDefault();
     console.log(formData);
     const url = formData._id
@@ -141,7 +146,7 @@ const SubCategoryPage = () => {
     const data = await res.json();
     window.location.reload();
     console.log(data);
-   
+    setisLoading(false);
     setIsModalOpen(false);
   };
 
@@ -151,14 +156,16 @@ const SubCategoryPage = () => {
   };
 
   const deleteSubCategory = async (id) => {
+    setisLoading(true);
     try {
-      await fetch(`http://localhost:3000/admin/delete/subcategory`, {
+      await fetch(`https://stile-backend-gnqp.vercel.app/admin/delete/subcategory`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
           },
           body: JSON.stringify({ _id: id }),
       });
+      setisLoading(false);
        window.location.reload();
     } catch (err) {
       console.error(err);
@@ -166,6 +173,8 @@ const SubCategoryPage = () => {
   };
 
   return (
+    <>
+      {isloading && <Loading />}
     <div className="container mx-auto p-6 bg-gray-50 min-h-screen">
       <h2 className="text-lg font-bold mb-6 flex justify-between items-center">
         Subcategories
@@ -213,6 +222,7 @@ const SubCategoryPage = () => {
         handleInputChange={handleInputChange}
       />
     </div>
+    </>
   );
 };
 
