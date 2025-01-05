@@ -139,6 +139,7 @@ const SubCategoryPage = () => {
       body: JSON.stringify(formData),
     });
     const data = await res.json();
+    window.location.reload();
     console.log(data);
    
     setIsModalOpen(false);

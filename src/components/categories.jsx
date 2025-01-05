@@ -130,7 +130,7 @@ const CategoryPage = () => {
     });
     const data = await res.json();
     console.log(data);
-   
+    window.location.reload();
     setFormData({ name: "", startingPrice: "", image: "" });
     setIsModalOpen(false);
     
