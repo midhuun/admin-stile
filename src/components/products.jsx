@@ -13,9 +13,13 @@ const Modal = ({
   const [subcategories, setSubcategories] = useState([]);
   const [uploading, setUploading] = useState(false);
   const [key, setKey] = useState("");
+  const [size, setSize] = useState("");
+  const [stock, setStock] = useState("");
   const [value, setValue] = useState("");
   const [attributes, setAttributes] = useState({});
-  console.log(attributes)
+  const [sizes, setSizes] = useState({});
+
+  // console.log(attributes)
   useEffect(() => {
     async function getData() {
       const data = await getProducts();
@@ -24,21 +28,42 @@ const Modal = ({
     }
     getData();
   }, []);
+  const handleSize = () => {
+    if (!size || !stock) {
+      alert("Size or Stock is missing");
+      return
+    } else {
+      const trimkey = size.trim();
+      trimkey.split(" ").join("-");
+      setSizes((prev) => ({ ...prev, [trimkey]: stock }));
+      handleInputChange({target:{name:"sizes",value:{[trimkey]:stock}}})
+      setSize("");
+      setStock("");
+    }
+  };
+  // console.log(sizes)
+  const removeSize = (size) => {
+    setSizes((prev) => {
+      const newAttributes = { ...prev };
+      delete newAttributes[key];
+      return newAttributes;
+    });
+  };
   const handleAttribute = () => {
     if (!key || !value) {
       alert("Key or value is missing");
       return
     } else {
       const trimkey = key.trim();
-      trimkey.split(" ").join("-")
+      trimkey.split(" ").join("-");
       setAttributes((prev) => ({ ...prev, [trimkey]: value }));
-      console.log(attributes);
-      handleInputChange({target:{name:"attributes",value:attributes}})
+    
+      handleInputChange({target:{name:"attributes",value:{[trimkey]:value}}})
       setKey("");
       setValue("");
     }
   };
-  console.log(attributes)
+
   const handleRemoveAttribute = (key) => {
     setAttributes((prev) => {
       const newAttributes = { ...prev };
@@ -88,16 +113,16 @@ const Modal = ({
   if (!isOpen) return null;
 
   return (
-    <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50">
-      <div className="bg-white rounded-lg shadow-lg p-6 w-11/12 max-w-md">
-        <h3 className="text-xl font-bold mb-4">
+    <div className="absolute min-h-screen inset-0 top-10 flex items-center justify-center bg-black bg-opacity-50">
+      <div className="bg-white mt-2 rounded-lg shadow-lg p-6 w-11/12 max-w-md">
+        <h3 className="text-xl font-bold mb-2">
           {isEditing ? "Edit Product" : "Add New Product"}
         </h3>
-        <form onSubmit={onSubmit}>
-          {Object.keys(formData).map((key) => {
+        <form className="mt-[20px]" onSubmit={onSubmit}>
+          {Object.keys(formData).map((key,index) => {
             if (key === "category") {
               return (
-                <div key={key} className="mb-4">
+                <div key={index} className="mb-2">
                   <label className="block text-gray-700 font-semibold mb-2">
                     Category
                   </label>
@@ -105,7 +130,7 @@ const Modal = ({
                     name={key}
                     value={formData[key]}
                     onChange={handleInputChange}
-                    className="w-full border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring focus:ring-blue-500 transition duration-200"
+                    className="w-full border border-gray-300 rounded px-3 py-1 focus:outline-none focus:ring focus:ring-blue-500 transition duration-200"
                     required
                   >
                     <option value="">Select a category</option>
@@ -120,7 +145,7 @@ const Modal = ({
             }
             if (key === "images") {
               return (
-                <div key={key} className="mb-4">
+                <div key={key} className="mb-2">
                   <label className="block text-gray-700 font-semibold mb-2">
                     Images
                   </label>
@@ -129,7 +154,7 @@ const Modal = ({
                     multiple
                     accept=".jpg, .jpeg, .png, .gif"
                     onChange={handleImageUpload}
-                    className="w-full border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring focus:ring-blue-500 transition duration-200"
+                    className="w-full border border-gray-300 rounded px-3 py-1 focus:outline-none focus:ring focus:ring-blue-500 transition duration-200"
                   />
                   {uploading && <p className="text-blue-500">Uploading images...</p>}
                   {formData.images && formData.images.length > 0 && (
@@ -146,12 +171,12 @@ const Modal = ({
                 </div>
               );
             }
-            if (key === "attributes"){
+            if (key === "attributes" || key === "stock") {
               return null;
             }
             if (key === "subcategory") {
               return (
-                <div key={key} className="mb-4">
+                <div key={key} className="mb-2">
                   <label className="block text-gray-700 font-semibold mb-2">
                     Subcategory
                   </label>
@@ -159,7 +184,7 @@ const Modal = ({
                     name={key}
                     value={formData[key]}
                     onChange={handleInputChange}
-                    className="w-full border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring focus:ring-blue-500 transition duration-200"
+                    className="w-full border border-gray-300 rounded px-3 py-1 focus:outline-none focus:ring focus:ring-blue-500 transition duration-200"
                     required
                   >
                     <option value="">Select a subcategory</option>
@@ -174,23 +199,69 @@ const Modal = ({
             }
             
             return (
-              <div key={key} className="mb-4">
+              <div key={key} className="mb-2">
                 <label className="block text-gray-700 font-semibold mb-2">
                   {key.charAt(0).toUpperCase() + key.slice(1)}
                 </label>
                 <input
-                  type={key === "price" || key === "stock" ? "number" : "text"}
+                  type={key === "price" || key === "discount" ? "number" : "text"}
                   name={key}
                   value={formData[key]}
                   onChange={handleInputChange}
-                  className="w-full border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring focus:ring-blue-500 transition duration-200"
+                  className="w-full border border-gray-300 rounded px-3 py-1 focus:outline-none focus:ring focus:ring-blue-500 transition duration-200"
                   required={key !== "image"}
                 />
               </div>
             );
           })}
+          
+          <label className="block text-gray-700">Sizes</label>
+        <div className="mb-2 mt-2 items-center flex gap-5">
+          <div>
+            <label className="block text-gray-700">Size</label>
+            <input
+              onChange={(e) => setSize(e.target.value)}
+              type="text"
+              value={size}
+              className="w-full border rounded p-2"
+              placeholder="Key"
+            />
+          </div>
+          <div>
+            <label className="block text-gray-700">Stock</label>
+            <input
+              onChange={(e) => setStock(e.target.value)}
+              type="text"
+              value={stock}
+              className="w-full border rounded p-2"
+              placeholder="value"
+            />
+          </div>
+          <div className="text-white">add</div>
+          <button
+            onClick={handleSize}
+            type="button"
+            className="px-3 h-10 text-white bg-blue-500"
+          >
+            Add
+          </button>
+        </div>
+        
+        {Object.keys(sizes).map((key) => (
+          <div key={key} className="mb-2 mt-2 w-full items-center flex gap-5">
+            <p className="border px-3 w-1/2 py-2">{key}</p>
+            <p className="border px-3 w-1/2 py-2">{sizes[key]}</p>
+            <button
+              onClick={() => removeSize(key)}
+              className="px-3 h-10 text-white bg-red-500"
+              type="button"
+            >
+              Remove
+            </button>
+          </div>
+        ))}
             <label className="block text-gray-700">Specifications</label>
-        <div className="mb-4 mt-2 items-center flex gap-5">
+        <div className="mb-2 mt-2 items-center flex gap-5">
           <div>
             <label className="block text-gray-700">Key</label>
             <input
@@ -211,7 +282,7 @@ const Modal = ({
               placeholder="value"
             />
           </div>
-          <div className="text-white">add</div>
+          <div className="text-white">Add</div>
           <button
             onClick={handleAttribute}
             type="button"
@@ -222,7 +293,7 @@ const Modal = ({
         </div>
         
         {Object.keys(attributes).map((key) => (
-          <div key={key} className="mb-4 mt-2 w-full items-center flex gap-5">
+          <div key={key} className="mb-2 mt-2 w-full items-center flex gap-5">
             <p className="border px-3 w-1/2 py-2">{key}</p>
             <p className="border px-3 w-1/2 py-2">{attributes[key]}</p>
             <button
@@ -237,14 +308,14 @@ const Modal = ({
           <div className="flex justify-between">
             <button
               type="submit"
-              className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition duration-200"
+              className="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600 transition duration-200"
             >
               {isEditing ? "Update Product" : "Save Product"}
             </button>
             <button
               type="button"
               onClick={onClose}
-              className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition duration-200"
+              className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 transition duration-200"
             >
               Cancel
             </button>
@@ -262,14 +333,15 @@ const ProductPage = () => {
     category: "",
     subcategory: "",
     price: "",
-    stock: "",
+    discount:"",
     images: [],
     description: "",
-    attributes:{}
+    attributes:{},
+    sizeLength:{}
   });
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingProduct, setEditingProduct] = useState(null);
-
+  const [sizeArr,setSizeArr] = useState([]);
   useEffect(() => {
     const getAllProducts = async () => {
       const data = await getProducts();
@@ -277,18 +349,43 @@ const ProductPage = () => {
     };
     getAllProducts();
   }, []);
-   console.log(formData);
+ useEffect(() => {
+   console.log(formData)
+ }, [formData])
+  
   const handleInputChange = (e) => {
     const { name, value } = e.target;
+    if(name === 'attributes'){
+      setFormData((prevFormData) => ({ ...prevFormData, attributes: { ...prevFormData.attributes , ...value } }));
+      return;
+    }
+    if(name === 'sizes'){
+    setFormData((prevFormData) => ({ ...prevFormData, sizeLength: { ...prevFormData.sizeLength, ...value } }));
+    const sizeKey = Object.keys(formData.sizeLength);
+    const sizeValue = Object.values(formData.sizeLength);
+    console.log(sizeValue)
+    sizeKey.map((size,index)=>{
+      setSizeArr((prev)=>[...prev,{"size":size,"stock":sizeValue[index]}])
+    })
+    console.log(sizeArr)
+      return;
+    }
     setFormData({ ...formData, [name]: value });
+    
+    // if(name === 'sizes'){
+    //   setFormData((prevFormData) => ({ ...prevFormData, attributes: { ...prevFormData.sizes,value}}))
+    // }
+    // console.log(e.target);
+    // console.log(formData);
   };
-
+ 
   const addOrUpdateProduct = async(e) => {
     e.preventDefault();
-    console.log(formData)
+    console.log(formData);
     if (editingProduct) {
      
     } else {
+      console.log({...formData,"sizes":sizeArr})
       const url ="https://stile-backend-gnqp.vercel.app/admin/create/product";
       const method = "POST";
       const res = await fetch(url, {
@@ -296,11 +393,11 @@ const ProductPage = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({...formData,"sizes":sizeArr}),
       });
       const data = await res.json();
       console.log(data);
-     window.location.reload();
+    
     }
 
     setFormData({
@@ -308,10 +405,11 @@ const ProductPage = () => {
       category: "",
       subcategory: "",
       price: "",
-      stock: "",
       images: [],
       description: "",
+      discount:"",
       attributes:{},
+      sizes:{}
     });
     setIsModalOpen(false);
     setEditingProduct(null);
@@ -331,11 +429,11 @@ const ProductPage = () => {
     <div className="container mx-auto p-6 bg-gray-50 min-h-screen">
       <h2 className="text-4xl font-bold text-center mb-8">Product Dashboard</h2>
 
-      <div className="flex justify-between mb-4">
+      <div className="flex justify-between mb-2">
         <h3 className="text-xl font-semibold">Products</h3>
         <button
           onClick={() => setIsModalOpen(true)}
-          className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition duration-200"
+          className="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600 transition duration-200"
         >
           Add Product
         </button>
@@ -359,13 +457,13 @@ const ProductPage = () => {
               <div className="flex justify-between gap-3">
                 <button
                   onClick={() => handleEdit(product)}
-                  className="mt-4 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition duration-200"
+                  className="mt-4 bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600 transition duration-200"
                 >
                   Edit
                 </button>
                 <button
                   onClick={() => deleteProduct(product.id)}
-                  className="mt-4 bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition duration-200"
+                  className="mt-4 bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 transition duration-200"
                 >
                   Delete
                 </button>
