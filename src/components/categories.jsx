@@ -183,7 +183,7 @@ const CategoryPage = () => {
         {categories?.map((category) => (
           <div key={category._id} className="bg-white rounded-lg shadow-md p-4 transition-transform transform ">
             <div className="flex justify-center mb-4">
-              <img src={category.image} alt={category.name} className="w-full h-32 object-cover rounded" />
+              <img src={category.image} alt={category.name} className="w-full h-32 object-contain rounded" />
             </div>
             <h3 className="text-xl font-semibold">{category.name}</h3>
             <p className="text-gray-600">₹{category.startingPrice}</p>

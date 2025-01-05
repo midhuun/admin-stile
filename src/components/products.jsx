@@ -448,7 +448,7 @@ const ProductPage = () => {
             <img
               src={product.images[0] || "https://via.placeholder.com/300"}
               alt={product.name}
-              className="w-full h-48 object-cover rounded-t-lg"
+              className="w-full h-48 object-contain rounded-t-lg"
             />
             <div className="p-4">
               <h3 className="text-xl font-semibold">{product.name}</h3>

@@ -192,7 +192,7 @@ const SubCategoryPage = () => {
             <img
               src={subcategory.image || "https://via.placeholder.com/300"}
               alt={subcategory.name}
-              className="w-full h-32 object-cover rounded mb-4"
+              className="w-full h-32 object-contain rounded mb-4"
             />
             <h3 className="text-xl font-semibold">{subcategory.name}</h3>
             <p className="text-gray-600">{subcategory.category.name}</p>
