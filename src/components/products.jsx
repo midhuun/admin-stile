@@ -289,7 +289,7 @@ const ProductPage = () => {
     if (editingProduct) {
      
     } else {
-      const url ="http://localhost:3000/admin/create/product";
+      const url ="https://stile-backend-gnqp.vercel.app/admin/create/product";
       const method = "POST";
       const res = await fetch(url, {
         method,

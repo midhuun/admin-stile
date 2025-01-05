@@ -144,7 +144,7 @@ const CategoryPage = () => {
 
   const deleteCategory = async (_id) => {
     try {
-      await fetch(`http://localhost:3000/admin/delete/category`, {
+      await fetch(`https://stile-backend-gnqp.vercel.app/admin/delete/category`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",

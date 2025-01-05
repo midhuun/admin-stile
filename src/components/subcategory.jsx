@@ -128,7 +128,7 @@ const SubCategoryPage = () => {
     console.log(formData);
     const url = formData._id
       ? `https://stile-backend-gnqp.vercel.app/admin/update/subCategory`
-      : "http://localhost:3000/admin/create/subCategory";
+      : "https://stile-backend-gnqp.vercel.app/admin/create/subCategory";
 
     const method = formData._id ? "PATCH" : "POST";
     const res = await fetch(url, {
