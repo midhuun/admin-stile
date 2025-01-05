@@ -354,7 +354,7 @@ const ProductPage = () => {
             />
             <div className="p-4">
               <h3 className="text-xl font-semibold">{product.name}</h3>
-              <p className="text-gray-700">${product.price}</p>
+              <p className="text-gray-700">₹{product.price}</p>
               <p className="text-gray-600">{product.description}</p>
               <div className="flex justify-between gap-3">
                 <button

@@ -176,7 +176,7 @@ const CategoryPage = () => {
               <img src={category.image} alt={category.name} className="w-full h-32 object-cover rounded" />
             </div>
             <h3 className="text-xl font-semibold">{category.name}</h3>
-            <p className="text-gray-600">${category.startingPrice}</p>
+            <p className="text-gray-600">₹{category.startingPrice}</p>
             <div className="flex justify-between">
               <button
                 onClick={() => handleEdit(category)} // Open modal with existing category data
