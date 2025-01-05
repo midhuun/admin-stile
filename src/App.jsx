@@ -1,8 +1,6 @@
 // src/App.js
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
-import Dashboard from './components/Dashboard';
-import CategoryForm from './components/CategoryForm';
 import CategoryPage from './components/categories';
 import SubCategoryPage from './components/subcategory';
 import ProductPage from './components/products';
