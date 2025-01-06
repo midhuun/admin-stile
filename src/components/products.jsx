@@ -113,8 +113,8 @@ const Modal = ({
   if (!isOpen) return null;
 
   return (
-    <div className="absolute min-h-screen inset-0 top-10 flex items-center justify-center bg-black bg-opacity-50">
-      <div className="bg-white mt-2 rounded-lg shadow-lg p-6 w-11/12 max-w-md">
+    <div className="absolute min-h-screen inset-0 top-20 flex items-center justify-center bg-black bg-opacity-50">
+      <div className="bg-white pt-20 rounded-lg shadow-lg p-6 w-11/12 max-w-md">
         <h3 className="text-xl font-bold mb-2">
           {isEditing ? "Edit Product" : "Add New Product"}
         </h3>
@@ -135,7 +135,7 @@ const Modal = ({
                   >
                     <option value="">Select a category</option>
                     {categories.map((category) => (
-                      <option key={category.id} value={category._id}>
+                      <option key={category._id} value={category._id}>
                         {category.name}
                       </option>
                     ))}
@@ -171,7 +171,7 @@ const Modal = ({
                 </div>
               );
             }
-            if (key === "attributes" || key === "stock") {
+            if (key === "attributes" || key === "stock" || key === "sizeLength") {
               return null;
             }
             if (key === "subcategory") {
@@ -251,13 +251,13 @@ const Modal = ({
           <div key={key} className="mb-2 mt-2 w-full items-center flex gap-5">
             <p className="border px-3 w-1/2 py-2">{key}</p>
             <p className="border px-3 w-1/2 py-2">{sizes[key]}</p>
-            <button
+            {/* <button
               onClick={() => removeSize(key)}
               className="px-3 h-10 text-white bg-red-500"
               type="button"
             >
               Remove
-            </button>
+            </button> */}
           </div>
         ))}
             <label className="block text-gray-700">Specifications</label>
@@ -296,13 +296,13 @@ const Modal = ({
           <div key={key} className="mb-2 mt-2 w-full items-center flex gap-5">
             <p className="border px-3 w-1/2 py-2">{key}</p>
             <p className="border px-3 w-1/2 py-2">{attributes[key]}</p>
-            <button
+            {/* <button
               onClick={() => handleRemoveAttribute(key)}
               className="px-3 h-10 text-white bg-red-500"
               type="button"
             >
               Remove
-            </button>
+            </button> */}
           </div>
         ))}
           <div className="flex justify-between">
@@ -337,7 +337,7 @@ const ProductPage = () => {
     images: [],
     description: "",
     attributes:{},
-    sizeLength:{}
+    sizeLength:{},
   });
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingProduct, setEditingProduct] = useState(null);
@@ -351,7 +351,8 @@ const ProductPage = () => {
   }, []);
  useEffect(() => {
    console.log(formData)
- }, [formData])
+   console.log(sizeArr)
+ }, [formData,sizeArr])
   
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -360,25 +361,19 @@ const ProductPage = () => {
       return;
     }
     if(name === 'sizes'){
-    setFormData((prevFormData) => ({ ...prevFormData, sizeLength: { ...prevFormData.sizeLength, ...value } }));
-    const sizeKey = Object.keys(formData.sizeLength);
-    const sizeValue = Object.values(formData.sizeLength);
-    console.log(sizeValue)
-    sizeKey.map((size,index)=>{
-      setSizeArr((prev)=>[...prev,{"size":size,"stock":sizeValue[index]}])
-    })
-    console.log(sizeArr)
+      setSizeArr((prevState) => [
+        ...prevState,
+        {
+          size: Object.keys(value)[0],
+          stock: Object.values(value)[0], 
+        },
+      ]);
       return;
     }
+   
     setFormData({ ...formData, [name]: value });
-    
-    // if(name === 'sizes'){
-    //   setFormData((prevFormData) => ({ ...prevFormData, attributes: { ...prevFormData.sizes,value}}))
-    // }
-    // console.log(e.target);
-    // console.log(formData);
   };
- 
+  console.log("Outside",sizeArr)
   const addOrUpdateProduct = async(e) => {
     e.preventDefault();
     console.log(formData);
@@ -421,9 +416,23 @@ const ProductPage = () => {
     setIsModalOpen(true);
   };
 
-  const deleteProduct = (id) => {
-    setProducts(products.filter((product) => product.id !== id));
-  };
+  const deleteProduct = async(id) => {
+    try{
+    const res = await fetch(`https://stile-backend-gnqp.vercel.app/admin/delete/product`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ _id:id })
+  })
+  if(res.status === 200){
+    window.location.reload();
+}
+    }
+catch(err){
+  console.log(err);
+}
+  }
 
   return (
     <div className="container mx-auto p-6 bg-gray-50 min-h-screen">
@@ -455,14 +464,9 @@ const ProductPage = () => {
               <p className="text-gray-700">₹{product.price}</p>
               <p className="text-gray-600">{product.description}</p>
               <div className="flex justify-between gap-3">
+                
                 <button
-                  onClick={() => handleEdit(product)}
-                  className="mt-4 bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600 transition duration-200"
-                >
-                  Edit
-                </button>
-                <button
-                  onClick={() => deleteProduct(product.id)}
+                  onClick={() => deleteProduct(product._id)}
                   className="mt-4 bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 transition duration-200"
                 >
                   Delete

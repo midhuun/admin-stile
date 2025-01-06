@@ -126,7 +126,7 @@ const CategoryPage = () => {
       ? `https://stile-backend-gnqp.vercel.app/admin/update/category` 
       : "https://stile-backend-gnqp.vercel.app/admin/create/category"; 
     
-    const method = formData._id ? "PUT" : "POST"; 
+    const method = formData._id ? "PATCH" : "POST"; 
     console.log(formData)
     const res = await fetch(url, {
       method: method,
