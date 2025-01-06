@@ -171,7 +171,7 @@ const SubCategoryPage = () => {
       console.error(err);
     }
   };
-
+ console.log(subcategories)
   return (
     <>
       {isloading && <Loading />}
@@ -187,7 +187,7 @@ const SubCategoryPage = () => {
       </h2>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-        {subcategories.map((subcategory) => (
+        {subcategories.length>0 && subcategories.map((subcategory) => (
           <div key={subcategory._id} className="bg-white rounded-lg shadow-md p-4">
             <img
               src={subcategory.image || "https://via.placeholder.com/300"}
@@ -197,12 +197,12 @@ const SubCategoryPage = () => {
             <h3 className="text-xl font-semibold">{subcategory.name}</h3>
             <p className="text-gray-600">{subcategory.category.name}</p>
             <div className="flex justify-between mt-4">
-              <button
+              {/* <button
                 onClick={() => handleEdit(subcategory)}
                 className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
               >
                 Edit
-              </button>
+              </button> */}
               <button
                 onClick={() => deleteSubCategory(subcategory._id)}
                 className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
