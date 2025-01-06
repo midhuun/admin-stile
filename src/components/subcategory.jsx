@@ -28,7 +28,13 @@ const Modal = ({ isOpen, onClose, onSubmit, formData, handleInputChange }) => {
       const data = await res.json();
       console.log(data);
       if (data.success) {
-        handleInputChange({ target: { name: "image", value: data.data.url } });
+        if(event.target.name === 'sizeChart'){
+          handleInputChange({ target: { name: "sizeurl", value: data.data.url } });
+        }
+        else{
+          handleInputChange({ target: { name: "image", value: data.data.url } });
+        }
+       
       } else {
         console.error("Image upload failed", data.error.message);
       }
@@ -51,7 +57,7 @@ const Modal = ({ isOpen, onClose, onSubmit, formData, handleInputChange }) => {
               type="text"
               name="name"
               value={formData.name}
-              onChange={handleInputChange}
+              onChange={(handleInputChange)}
               className="w-full border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring focus:ring-blue-500 transition duration-200"
               required
             />
@@ -72,6 +78,18 @@ const Modal = ({ isOpen, onClose, onSubmit, formData, handleInputChange }) => {
             )} 
               
             </select>
+          </div>
+          <div className="mb-4">
+            <label className="block text-gray-700 font-semibold mb-2">Size Chart URL</label>
+            <input
+              type="file"
+              name="sizeChart"
+              accept=".jpg, .jpeg, .png, .gif"
+              onChange={handleImageUpload}
+              className="w-full border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring focus:ring-blue-500 transition duration-200"
+            />
+            {uploading && <p className="text-blue-500">Uploading image...</p>}
+            {formData.image && <p className="text-green-500 mt-2">Image uploaded successfully!</p>}
           </div>
           <div className="mb-4">
             <label className="block text-gray-700 font-semibold mb-2">Image URL</label>
@@ -108,7 +126,7 @@ const Modal = ({ isOpen, onClose, onSubmit, formData, handleInputChange }) => {
 
 const SubCategoryPage = () => {
   const [subcategories, setSubCategories] = useState([]);
-  const [formData, setFormData] = useState({ name: "", category: "", image: "" });
+  const [formData, setFormData] = useState({ name: "", category: "", image: "",sizeurl:"" });
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isloading,setisLoading] = useState(false);
 
