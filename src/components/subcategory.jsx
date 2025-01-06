@@ -213,7 +213,7 @@ const SubCategoryPage = () => {
               className="w-full h-32 object-contain rounded mb-4"
             />
             <h3 className="text-xl font-semibold">{subcategory.name}</h3>
-            <p className="text-gray-600">{subcategory.category.name}</p>
+            <p className="text-gray-600">{subcategory.category?.name}</p>
             <div className="flex justify-between mt-4">
               {/* <button
                 onClick={() => handleEdit(subcategory)}
