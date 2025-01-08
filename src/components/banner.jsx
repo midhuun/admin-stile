@@ -9,7 +9,7 @@ const Banner = () => {
     const [title, setTitle] = useState("");
     async function getBanner() {
         setIsLoading(true);
-        const res = await fetch("http://localhost:3000/banner");
+        const res = await fetch("https://stile-backend.vercel.app/banner");
         const data = await res.json();
         setData(data);
         setIsLoading(false);
@@ -44,7 +44,7 @@ const Banner = () => {
    
   }
   async function createBanner(){
-     const res = await fetch("http://localhost:3000/banner/create", {
+     const res = await fetch("https://stile-backend.vercel.app/banner/create", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -58,7 +58,7 @@ const Banner = () => {
   }
   async function deleteBanner(id) {
     try {
-      await fetch(`http://localhost:3000/banner/delete`, {
+      await fetch(`https://stile-backend.vercel.app/banner/delete`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
