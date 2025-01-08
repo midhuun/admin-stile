@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
 import CategoryPage from './components/categories';
 import SubCategoryPage from './components/subcategory';
 import ProductPage from './components/products';
+import Banner from './components/banner';
 // Import other forms...
 
 const App = () => {
@@ -31,6 +32,12 @@ const App = () => {
                 <span className="">Products</span>
               </Link>
             </li>
+            <li>
+              <Link to="/banner" className="flex items-center p-2 rounded hover:bg-gray-700 transition duration-200">
+                <span className="material-icons">Banner</span>
+                
+              </Link>
+            </li>
           </ul>
         </nav>
 
@@ -40,6 +47,7 @@ const App = () => {
             <Route path="/" element={<CategoryPage />} />
             <Route path="/subcategories" element={<SubCategoryPage />} />
             <Route path="/products" element={<ProductPage />} />
+            <Route path="/banner" element={<Banner />} />
           </Routes>
         </div>
       </div>
