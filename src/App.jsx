@@ -17,8 +17,7 @@ const App = () => {
           <ul className="space-y-4">
             <li>
               <Link to="/" className="flex items-center p-2 rounded hover:bg-gray-700 transition duration-200">
-                <span className="material-icons">Categories</span>
-                
+                <span className="material-icons">Categories</span>  
               </Link>
             </li>
             <li>

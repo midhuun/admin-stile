@@ -78,7 +78,7 @@ const Modal = ({
     setUploading(true);
 
     try {
-      const uploadPromises = Array.from(files).map((file) => {
+      const uploadPromises = Array.from(files)?.map((file) => {
         const formData = new FormData();
         formData.append("image", file);
 
@@ -119,7 +119,7 @@ const Modal = ({
           {isEditing ? "Edit Product" : "Add New Product"}
         </h3>
         <form className="mt-[20px]" onSubmit={onSubmit}>
-          {Object.keys(formData).map((key,index) => {
+          {Object.keys(formData)?.map((key,index) => {
             if (key === "category") {
               return (
                 <div key={index} className="mb-2">
@@ -134,7 +134,7 @@ const Modal = ({
                     required
                   >
                     <option value="">Select a category</option>
-                    {categories.map((category) => (
+                    {categories?.map((category) => (
                       <option key={category._id} value={category._id}>
                         {category.name}
                       </option>
@@ -159,7 +159,7 @@ const Modal = ({
                   {uploading && <p className="text-blue-500">Uploading images...</p>}
                   {formData.images && formData.images.length > 0 && (
                     <ul className="mt-2 list-disc list-inside">
-                      {formData.images.map((image, index) => (
+                      {formData.images?.map((image, index) => (
                         <li key={index} className="text-blue-500">
                           <a href={image} target="_blank" rel="noopener noreferrer">
                             {image}
@@ -188,7 +188,7 @@ const Modal = ({
                     required
                   >
                     <option value="">Select a subcategory</option>
-                    {subcategories.map((subcategory) => (
+                    {subcategories?.map((subcategory) => (
                       <option key={subcategory._id} value={subcategory._id}>
                         {subcategory.name}
                       </option>
@@ -247,7 +247,7 @@ const Modal = ({
           </button>
         </div>
         
-        {Object.keys(sizes).map((key) => (
+        {Object.keys(sizes)?.map((key) => (
           <div key={key} className="mb-2 mt-2 w-full items-center flex gap-5">
             <p className="border px-3 w-1/2 py-2">{key}</p>
             <p className="border px-3 w-1/2 py-2">{sizes[key]}</p>
@@ -292,7 +292,7 @@ const Modal = ({
           </button>
         </div>
         
-        {Object.keys(attributes).map((key) => (
+        {Object.keys(attributes)?.map((key) => (
           <div key={key} className="mb-2 mt-2 w-full items-center flex gap-5">
             <p className="border px-3 w-1/2 py-2">{key}</p>
             <p className="border px-3 w-1/2 py-2">{attributes[key]}</p>
@@ -449,7 +449,7 @@ catch(err){
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
-        {products.map((product) => (
+        {products?.map((product) => (
           <div
             key={product._id}
             className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300"
