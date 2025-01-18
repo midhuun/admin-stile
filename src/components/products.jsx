@@ -171,7 +171,7 @@ const Modal = ({
                 </div>
               );
             }
-            if (key === "attributes" || key === "stock" || key === "sizeLength") {
+            if (key === "attributes" || key === "stock" || key === "sizeLength" || key === 'CreatedAt') {
               return null;
             }
             if (key === "subcategory") {
@@ -350,8 +350,7 @@ const ProductPage = () => {
     getAllProducts();
   }, []);
  useEffect(() => {
-   console.log(formData)
-   console.log(sizeArr)
+   
  }, [formData,sizeArr])
   
   const handleInputChange = (e) => {
@@ -411,11 +410,15 @@ const ProductPage = () => {
   };
 
   const handleEdit = (product) => {
+    delete product.createdAt;
+    delete product.updatedAt;
+    delete product.__v
+    console.log(product);
     setFormData(product);
     setEditingProduct(product);
     setIsModalOpen(true);
   };
-
+ console.dir(editingProduct);
   const deleteProduct = async(id) => {
     try{
     const res = await fetch(`https://stile-backend-gnqp.vercel.app/admin/delete/product`, {
@@ -470,6 +473,12 @@ catch(err){
                   className="mt-4 bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 transition duration-200"
                 >
                   Delete
+                </button>
+                <button
+                  onClick={() => handleEdit(product)}
+                  className="mt-4 bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600 transition duration-200"
+                >
+                  Edit
                 </button>
               </div>
             </div>

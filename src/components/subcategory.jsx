@@ -215,12 +215,12 @@ const SubCategoryPage = () => {
             <h3 className="text-xl font-semibold">{subcategory.name}</h3>
             <p className="text-gray-600">{subcategories.category && subcategory.category?.name}</p>
             <div className="flex justify-between mt-4">
-              {/* <button
+               <button
                 onClick={() => handleEdit(subcategory)}
                 className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
               >
                 Edit
-              </button> */}
+              </button> 
               <button
                 onClick={() => deleteSubCategory(subcategory._id)}
                 className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
