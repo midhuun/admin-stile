@@ -4,37 +4,38 @@ import Loading from "./Loading";
 
 const Modal = ({ isOpen, onClose, onSubmit, formData, handleInputChange }) => {
   const [categories, setCategories] = useState([]);
-   const [uploading, setUploading] = useState(false);
+  const [uploading, setUploading] = useState(false);
+
   useEffect(() => {
-    const fetchSubcategories = async () => {
+    const fetchCategories = async () => {
       const data = await getProducts();
       setCategories(data.categories);
     };
-    fetchSubcategories();
+    fetchCategories();
   }, []);
+
   if (!isOpen) return null;
+
   const handleImageUpload = async (event) => {
     const file = event.target.files[0];
     if (!file) return;
     setUploading(true);
-    const formData = new FormData();
-    formData.append("image", file);
+
+    const imageData = new FormData(); // Renamed to avoid shadowing
+    imageData.append("image", file);
 
     try {
-      const res = await fetch("https://api.imgbb.com/1/upload?key=f3145a10e034400f4b912f8123f851b1", {
-        method: "POST",
-        body: formData,
-      });
+      const res = await fetch(
+        "https://api.imgbb.com/1/upload?key=f3145a10e034400f4b912f8123f851b1",
+        {
+          method: "POST",
+          body: imageData,
+        }
+      );
       const data = await res.json();
-      console.log(data);
       if (data.success) {
-        if(event.target.name === 'sizeChart'){
-          handleInputChange({ target: { name: "sizeurl", value: data.data.url } });
-        }
-        else{
-          handleInputChange({ target: { name: "image", value: data.data.url } });
-        }
-       
+        const inputName = event.target.name === "sizeChart" ? "sizeurl" : "image";
+        handleInputChange({ target: { name: inputName, value: data.data.url } });
       } else {
         console.error("Image upload failed", data.error.message);
       }
@@ -44,8 +45,9 @@ const Modal = ({ isOpen, onClose, onSubmit, formData, handleInputChange }) => {
       setUploading(false);
     }
   };
+
   return (
-    <div className="fixed  inset-0 flex items-center justify-center bg-black bg-opacity-50">
+    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
       <div className="bg-white rounded-lg shadow-lg p-6 w-11/12 max-w-md">
         <h3 className="text-xl font-bold mb-4">
           {formData._id ? "Edit Subcategory" : "Add New Subcategory"}
@@ -57,7 +59,7 @@ const Modal = ({ isOpen, onClose, onSubmit, formData, handleInputChange }) => {
               type="text"
               name="name"
               value={formData.name}
-              onChange={(handleInputChange)}
+              onChange={handleInputChange}
               className="w-full border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring focus:ring-blue-500 transition duration-200"
               required
             />
@@ -65,22 +67,24 @@ const Modal = ({ isOpen, onClose, onSubmit, formData, handleInputChange }) => {
           <div className="mb-4">
             <label className="block text-gray-700 font-semibold mb-2">Category</label>
             <select
-              type="text"
               name="category"
-              onChange={handleInputChange}
               value={formData.category}
+              onChange={handleInputChange}
               className="w-full border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring focus:ring-blue-500 transition duration-200"
               required
             >
-             <option value=''>Select a Category</option>
-             {categories.map((category)=>
-             <option key={category._id} value={category._id}>{category.name}</option>
-            )} 
-              
+              <option value="">Select a Category</option>
+              {categories.map((category) => (
+                <option key={category._id} value={category._id}>
+                  {category.name}
+                </option>
+              ))}
             </select>
           </div>
           <div className="mb-4">
-            <label className="block text-gray-700 font-semibold mb-2">Size Chart URL</label>
+            <label className="block text-gray-700 font-semibold mb-2">
+              Size Chart URL
+            </label>
             <input
               type="file"
               name="sizeChart"
@@ -89,7 +93,6 @@ const Modal = ({ isOpen, onClose, onSubmit, formData, handleInputChange }) => {
               className="w-full border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring focus:ring-blue-500 transition duration-200"
             />
             {uploading && <p className="text-blue-500">Uploading image...</p>}
-            {formData.image && <p className="text-green-500 mt-2">Image uploaded successfully!</p>}
           </div>
           <div className="mb-4">
             <label className="block text-gray-700 font-semibold mb-2">Image URL</label>
@@ -101,7 +104,6 @@ const Modal = ({ isOpen, onClose, onSubmit, formData, handleInputChange }) => {
               className="w-full border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring focus:ring-blue-500 transition duration-200"
             />
             {uploading && <p className="text-blue-500">Uploading image...</p>}
-            {formData.image && <p className="text-green-500 mt-2">Image uploaded successfully!</p>}
           </div>
           <div className="flex justify-between">
             <button
@@ -126,16 +128,21 @@ const Modal = ({ isOpen, onClose, onSubmit, formData, handleInputChange }) => {
 
 const SubCategoryPage = () => {
   const [subcategories, setSubCategories] = useState([]);
-  const [formData, setFormData] = useState({ name: "", category: "", image: "",sizeurl:"" });
+  const [formData, setFormData] = useState({
+    name: "",
+    category: "",
+    image: "",
+    sizeurl: "",
+  });
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isloading,setisLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     const fetchSubcategories = async () => {
-      setisLoading(true);
+      setIsLoading(true);
       const data = await getProducts();
-      setSubCategories(data.subCategories);
-      setisLoading(false);
+      setSubCategories(data.subCategories || []);
+      setIsLoading(false);
     };
     fetchSubcategories();
   }, []);
@@ -146,26 +153,36 @@ const SubCategoryPage = () => {
   };
 
   const addOrEditSubCategory = async (e) => {
-    setisLoading(true);
     e.preventDefault();
-    console.log(formData);
+    setIsLoading(true);
     const url = formData._id
-      ? `https://stile-backend-gnqp.vercel.app/admin/update/subcategory`
-      : "https://stile-backend-gnqp.vercel.app/admin/create/subCategory";
+      ? `http://localhost:3000/admin/update/subcategory`
+      : `http://localhost:3000/admin/create/subCategory`;
 
     const method = formData._id ? "PATCH" : "POST";
-    const res = await fetch(url, {
-      method,
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(formData),
-    });
-    const data = await res.json();
-    // window.location.reload();
-    console.log(data);
-    setisLoading(false);
-    setIsModalOpen(false);
+    const payload = formData._id
+      ? { _id: formData._id, ...formData }
+      : { ...formData };
+
+    try {
+      const res = await fetch(url, {
+        method,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+
+      const data = await res.json();
+      if (data.success) {
+        setFormData({ name: "", category: "", image: "", sizeurl: "" });
+        setIsModalOpen(false);
+      } else {
+        console.error(data.message);
+      }
+    } catch (err) {
+      console.error("Error:", err);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleEdit = (subcategory) => {
@@ -174,26 +191,26 @@ const SubCategoryPage = () => {
   };
 
   const deleteSubCategory = async (id) => {
-    setisLoading(true);
+    setIsLoading(true);
     try {
-      await fetch(`https://stile-backend-gnqp.vercel.app/admin/delete/subcategory`, {
+      await fetch(`http://localhost:3000/admin/delete/subcategory`, {
         method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ _id: id }),
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ _id: id }),
       });
-      setisLoading(false);
-       window.location.reload();
+      setSubCategories((prev) =>
+        prev.filter((subcategory) => subcategory._id !== id)
+      );
     } catch (err) {
-      console.error(err);
+      console.error("Error deleting subcategory:", err);
+    } finally {
+      setIsLoading(false);
     }
   };
- console.log(subcategories)
+
   return (
-    <>
-      {isloading && <Loading />}
     <div className="container mx-auto p-6 bg-gray-50 min-h-screen">
+      {isLoading && <Loading />}
       <h2 className="text-lg font-bold mb-6 flex justify-between items-center">
         Subcategories
         <button
@@ -205,7 +222,7 @@ const SubCategoryPage = () => {
       </h2>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-        {subcategories.length>0 && subcategories.map((subcategory) => (
+        {subcategories?.map((subcategory) => (
           <div key={subcategory._id} className="bg-white rounded-lg shadow-md p-4">
             <img
               src={subcategory.image || "https://via.placeholder.com/300"}
@@ -213,14 +230,16 @@ const SubCategoryPage = () => {
               className="w-full h-32 object-contain rounded mb-4"
             />
             <h3 className="text-xl font-semibold">{subcategory.name}</h3>
-            <p className="text-gray-600">{subcategories.category && subcategory.category?.name}</p>
+            <p className="text-gray-600">
+              {subcategory.category?.name || "No category assigned"}
+            </p>
             <div className="flex justify-between mt-4">
-               <button
+              <button
                 onClick={() => handleEdit(subcategory)}
                 className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
               >
                 Edit
-              </button> 
+              </button>
               <button
                 onClick={() => deleteSubCategory(subcategory._id)}
                 className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
@@ -240,7 +259,6 @@ const SubCategoryPage = () => {
         handleInputChange={handleInputChange}
       />
     </div>
-    </>
   );
 };
 
