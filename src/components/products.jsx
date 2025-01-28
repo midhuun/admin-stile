@@ -149,6 +149,7 @@ const Modal = ({
                     className="w-full border border-gray-300 rounded px-3 py-1 focus:outline-none focus:ring focus:ring-blue-500 transition duration-200"
                     required
                   >
+                     <option value="">Select a subcategory</option>
                     {categories?.map((category) => (
                       <option key={category._id} value={category._id}>
                         {category.name}
@@ -364,7 +365,7 @@ const ProductPage = () => {
       setProducts(data.products);
     };
     getAllProducts();
-  }, [formData]);
+  }, []);
   
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -440,7 +441,7 @@ const ProductPage = () => {
     setIsModalOpen(false);
     setEditingProduct(null);
   };
-
+  console.log(formData)
   const handleEdit = (product) => {
      setIsModalOpen(true);
      set_id(product._id);
