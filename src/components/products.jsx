@@ -455,7 +455,7 @@ const ProductPage = () => {
       name,
       description,
       discount,
-      images: images, 
+      images: [], 
       price,
       sizeObj: sizeLength,  
       subcategory,
