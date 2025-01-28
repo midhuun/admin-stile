@@ -156,8 +156,8 @@ const SubCategoryPage = () => {
     e.preventDefault();
     setIsLoading(true);
     const url = formData._id
-      ? `http://localhost:3000/admin/update/subcategory`
-      : `http://localhost:3000/admin/create/subCategory`;
+      ? `https://stile-backend-gnqp.vercel.app/admin/update/subcategory`
+      : `https://stile-backend-gnqp.vercel.app/admin/create/subCategory`;
 
     const method = formData._id ? "PATCH" : "POST";
     const payload = formData._id
@@ -193,7 +193,7 @@ const SubCategoryPage = () => {
   const deleteSubCategory = async (id) => {
     setIsLoading(true);
     try {
-      await fetch(`http://localhost:3000/admin/delete/subcategory`, {
+      await fetch(`https://stile-backend-gnqp.vercel.app/admin/delete/subcategory`, {
         method: "DELETE",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ _id: id }),
