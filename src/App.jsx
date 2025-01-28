@@ -5,6 +5,7 @@ import CategoryPage from './components/categories';
 import SubCategoryPage from './components/subcategory';
 import ProductPage from './components/products';
 import Banner from './components/banner';
+import AddProduct from './components/addProduct';
 // Import other forms...
 
 const App = () => {
@@ -47,6 +48,7 @@ const App = () => {
             <Route path="/subcategories" element={<SubCategoryPage />} />
             <Route path="/products" element={<ProductPage />} />
             <Route path="/banner" element={<Banner />} />
+            <Route path="/addProduct" element={<AddProduct />} />
           </Routes>
         </div>
       </div>
