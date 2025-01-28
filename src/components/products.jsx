@@ -473,9 +473,7 @@ const ProductPage = () => {
       },
       body: JSON.stringify({ _id:id })
   })
-  if(res.status === 200){
     window.location.reload();
-}
     }
 catch(err){
   console.log(err);
