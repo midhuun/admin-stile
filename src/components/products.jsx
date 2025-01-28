@@ -399,7 +399,7 @@ const ProductPage = () => {
     console.log(editingProduct);
     console.log(formData);
     if (editingProduct) {
-      const url ="http://localhost:3000/admin/update/product";
+      const url ="https://stile-backend-gnqp.vercel.app/admin/update/product";
       const method = "PATCH";
       const res = await fetch(url, {
         method,
