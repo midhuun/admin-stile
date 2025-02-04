@@ -400,7 +400,7 @@ const ProductPage = () => {
     console.log(editingProduct);
     console.log(formData);
     if (editingProduct) {
-      const url ="https://stile-backend-gnqp.vercel.app/admin/update/product";
+      const url ="https://stile-backend.vercel.app/admin/update/product";
       const method = "PATCH";
       const res = await fetch(url, {
         method,
@@ -411,9 +411,10 @@ const ProductPage = () => {
       });
       const data = await res.json();
       console.log(data);
+      window.location.reload();
     } else {
       console.log({...formData,"sizes":sizeArr})
-      const url ="https://stile-backend-gnqp.vercel.app/admin/create/product";
+      const url ="https://stile-backend.vercel.app/admin/create/product";
       const method = "POST";
       const res = await fetch(url, {
         method,
@@ -424,7 +425,7 @@ const ProductPage = () => {
       });
       const data = await res.json();
       console.log(data);
-    
+      window.location.reload();
     }
 
     setFormData({
@@ -467,7 +468,7 @@ const ProductPage = () => {
   };
   const deleteProduct = async(id) => {
     try{
-    const res = await fetch(`https://stile-backend-gnqp.vercel.app/admin/delete/product`, {
+    const res = await fetch(`https://stile-backend.vercel.app/admin/delete/product`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",

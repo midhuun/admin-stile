@@ -123,8 +123,8 @@ const CategoryPage = () => {
     setisLoading(true);
     e.preventDefault();
       const url = formData._id
-      ? `https://stile-backend-gnqp.vercel.app/admin/update/category` 
-      : "https://stile-backend-gnqp.vercel.app/admin/create/category"; 
+      ? `https://stile-backend.vercel.app/admin/update/category` 
+      : "https://stile-backend.vercel.app/admin/create/category"; 
     
     const method = formData._id ? "PATCH" : "POST"; 
     console.log(formData)
@@ -152,7 +152,7 @@ const CategoryPage = () => {
 
   const deleteCategory = async (_id) => {
     try {
-      await fetch(`https://stile-backend-gnqp.vercel.app/admin/delete/category`, {
+      await fetch(`https://stile-backend.vercel.app/admin/delete/category`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
