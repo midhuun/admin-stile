@@ -361,8 +361,8 @@ const ProductPage = () => {
   const [sizeArr,setSizeArr] = useState([]);
   useEffect(() => {
     const getAllProducts = async () => {
-      const data = await getProducts();
-      setProducts(data.products);
+      const data = await getAllProducts();
+      setProducts(data);
     };
     getAllProducts();
   }, []);
