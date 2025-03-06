@@ -1,8 +1,18 @@
-# React + Vite
+# 🛍️ Stile Sagio Admin Panel  
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+🚀 **A powerful admin dashboard for managing Stile Sagio, a modern e-commerce platform.**  
+📊 **Effortless category, product, and order management with a sleek UI.**  
 
-Currently, two official plugins are available:
+## ✨ Features  
+✅ **Category Management** – Add, edit, and delete categories dynamically.  
+✅ **Product Management** – Seamless CRUD operations for products.  
+✅ **Order Tracking** – View and manage customer orders.  
+✅ **Coupon System** – Create and apply discount coupons.  
+✅ **Performance Optimized** – Fast, smooth, and responsive admin panel.  
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🛠️ Tech Stack  
+🔹 **Frontend:** React, Next.js, TypeScript, TailwindCSS  
+🔹 **Backend:** Node.js, Express, MongoDB  
+🔹 **Authentication:** Firebase Auth  
+🔹 **State Management:** Redux  
+
