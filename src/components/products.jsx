@@ -361,8 +361,10 @@ const ProductPage = () => {
   const [sizeArr,setSizeArr] = useState([]);
   useEffect(() => {
     const getAllProducts = async () => {
-      const data = await getAllProducts();
+      const res = await fetch("https://stile-backend.vercel.app/allproducts");
+      const data = await res.json();
       setProducts(data);
+      console.log("Products",products)
     };
     getAllProducts();
   }, []);

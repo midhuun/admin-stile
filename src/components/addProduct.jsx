@@ -63,13 +63,13 @@ const AddProduct = () => {
             <input type="number" onChange={handleData} placeholder='Discount Percentage' className='border p-2 w-full' name="discount" id="" />
             <select onChange={handleData} className='w-full px-3 py-2 border'  name="category" id="">
                 <option value="">Select Category</option>
-                {categories.map((category:any)=>
+                {categories.map((category)=>
                 <option key={category._id} value={category._id}>{category.name}</option>
                 )}
             </select>
             <select onChange={handleData} className='w-full px-3 py-2 border'  name="subcategory" id="">
                 <option value="">Select SubCategory</option>
-                {subcategories.map((subcategory:any)=>
+                {subcategories.map((subcategory)=>
                 <option key={subcategory._id} value={subcategory._id}>{subcategory.name}</option>
                 )}
             </select>
@@ -78,12 +78,12 @@ const AddProduct = () => {
             <div className="flex items-center gap-3 justify-between">
             <select onChange={(e)=>handleSize(e)} className='w-full px-3 py-2 border'  name="" id="">
                 <option  value="">Select Size</option>
-                {sizes.map((size:any)=>
+                {sizes.map((size)=>
                 <option  key={size} value={size}>{size}</option>
                 )}
             </select>
             {addedSize}
-            <input type="text" onChange={(e:any)=>setstock(e.target.value)}  placeholder='Stock' className='border p-2 w-full' name="" id="" />
+            <input type="text" onChange={(e)=>setstock(e.target.value)}  placeholder='Stock' className='border p-2 w-full' name="" id="" />
             <button onClick={handleSize} type='button'  className='px-3 py-2 bg-blue-500 text-white'>Add</button>
             </div>
         </form>
@@ -93,7 +93,7 @@ const AddProduct = () => {
      <div onClick={()=>setModal(true)} className="absolute top-5 bg-blue-500 border cursor-pointer select-none text-white font-semibold p-3 right-5">Add  Product</div>
       {products.length >0 &&
       <div className='flex flex-wrap md:gap-3 gap-1'>
-        {products.map((product:any) =>
+        {products.map((product) =>
              <div key={product._id} className='p-5 grid place-items-center w-[350px]'>
                 <img src={product.images[0]} alt={product.name} className='md:w-[300px] border md:h-[350px] h-[150px] object-cover' />
                 <h2 className='text-lg px-4 font-bold'>{product.name}</h2>

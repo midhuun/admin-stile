@@ -5,6 +5,7 @@ import SubCategoryPage from './components/subcategory';
 import ProductPage from './components/products';
 import Banner from './components/banner';
 import AddProduct from './components/addProduct';
+import Orders from './components/Orders';
 
 const App = () => {
   const [authenticated, setAuthenticated] = useState(false);
@@ -53,6 +54,7 @@ const App = () => {
             <li><Link to="/subcategories" className="flex items-center p-2 rounded hover:bg-gray-700 transition">Subcategories</Link></li>
             <li><Link to="/products" className="flex items-center p-2 rounded hover:bg-gray-700 transition">Products</Link></li>
             <li><Link to="/banner" className="flex items-center p-2 rounded hover:bg-gray-700 transition">Banner</Link></li>
+            <li><Link to="/orders" className="flex items-center p-2 rounded hover:bg-gray-700 transition">Orders</Link></li>
           </ul>
         </nav>
         <div className="w-full md:w-3/4 p-6">
@@ -62,6 +64,7 @@ const App = () => {
             <Route path="/products" element={<ProductPage />} />
             <Route path="/banner" element={<Banner />} />
             <Route path="/addProduct" element={<AddProduct />} />
+            <Route path="/orders" element={<Orders />} />
           </Routes>
         </div>
       </div>

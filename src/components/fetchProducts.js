@@ -11,7 +11,7 @@ export const getProducts = async() =>{
 }
 export const getAllProducts = async() =>{
     try {
-        const res = await fetch('https://stile-backend.vercel.app/allProducts');
+        const res = await fetch('https://stile-backend.vercel.app/allproducts');
         const data = await res.json();
         return data;
     }
